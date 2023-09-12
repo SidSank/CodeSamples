@@ -1,0 +1,39 @@
+using AutoMapper;
+using CO.Server.Models;
+using CO.Server.Repositories.Interfaces;
+using CO.Server.Services.Interfaces;
+
+namespace CO.Server.Services
+{
+    public class ContactServerServices : ServiceBase<Contact>, IContactServerServices
+    {
+        private readonly ICreatedModifiedBusinessObjectServerService _createdModifiedBusinessObjectServerService;
+        private readonly IMapper _mapper;
+        private readonly IContactServerRepository _contactServerRepository;
+
+        public ContactServerServices(IUnitOfWork unitOfWork,
+            ICreatedModifiedBusinessObjectServerService createdModifiedBusinessObjectServerService,
+            IMapper mapper,
+            IContactServerRepository contactRepositories) : base(unitOfWork)
+        {
+            _createdModifiedBusinessObjectServerService = createdModifiedBusinessObjectServerService;
+            _mapper = mapper;
+            _contactServerRepository = contactRepositories;
+        }
+        public async Task<Contact> AddUpdateAsync(Contact contact, bool saveChanges = true)
+        {
+            if (contact != null)
+            {
+                var findContact = await _contactServerRepository.FirstOrDefaultAsync(x => x.Id == contact.Id);
+                if (findContact == null)
+                {
+                    var createContact = await _contactServerRepository.CreateAsync(contact, saveChanges);
+                    return createContact;
+                }
+                var updateCompany = await _contactServerRepository.UpdateAsync(contact, saveChanges);
+                return updateCompany;
+            }
+            return null;
+        }
+    }
+}
