@@ -1,0 +1,110 @@
+<div mat-dialog-title>
+  <h1 *ngIf="isEditUser" class="m-n font-thin h3">Edit User</h1>
+  <h1 *ngIf="!isEditUser" class="m-n font-thin h3">Register New User</h1>
+</div>
+<mat-dialog-content class="mat-typography">
+  <div class="wrapper-md">
+    <div class="row">
+      <div class="col-md-12">
+        <form class="bs-example form-horizontal" [formGroup]="updateUserForm">
+          <div class="form-group">
+            <label class="col-md-3 control-label">First Name:</label>
+            <div class="col-md-9">
+              <input formControlName="firstName" type="text" name="firstName" id="firstName" class="form-control"
+                placeholder="Enter your first name" [ngClass]="{ 'is-invalid': submitted && f['firstName'].errors }">
+              <div *ngIf="submitted && f['firstName'].errors" class="invalid-feedback">
+                <div *ngIf="f['firstName'].errors['required']">First name is required</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Last Name:</label>
+            <div class="col-md-9">
+              <input formControlName="lastName" type="text" name="lastName" id="lastName" class="form-control"
+                placeholder="Enter your last name" [ngClass]="{ 'is-invalid': submitted && f['lastName'].errors }">
+              <div *ngIf="submitted && f['lastName'].errors" class="invalid-feedback">
+                <div *ngIf="f['lastName'].errors['required']">Last name is required</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Email:</label>
+            <div class="col-md-9">
+              <input formControlName="email" type="email" name="email" id="email" class="form-control"
+                placeholder="Enter your full email" [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" />
+              <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+                <div *ngIf="f['email'].errors['required']">Email is required</div>
+                <div *ngIf="f['email'].errors['email'] || f['email'].errors['pattern']">Email is invalid</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">User Role:</label>
+            <div class="col-md-9">
+              <mat-select [ngClass]="{ 'is-invalid': submitted && f['rolesId'].errors }" class="form-control"
+                placeholder="Select Role" formControlName="rolesId" multiple>
+                <mat-option *ngFor="let role of roles" [value]="role?.id">{{role?.name}}</mat-option>
+              </mat-select>
+              <div *ngIf="submitted && f['rolesId'].errors" class="invalid-feedback">
+                <div *ngIf="f['rolesId'].errors['required']">Role is required</div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="!isEditUser" class="form-group">
+            <label class="col-md-3 control-label">New Password</label>
+            <div class="col-md-9">
+              <input formControlName="password" type="password" name="password" id="password" class="form-control"
+                placeholder="Enter your new password" [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" />
+              <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+                <div *ngIf="f['password'].errors['required']">
+                  Password is required
+                </div>
+                <div *ngIf="f['password'].errors['maxlength']">
+                  Password must be less than 20 characters
+                </div>
+                <div *ngIf="f['password'].errors['minlength']">
+                  Password must have at least 6 characters
+                </div>
+                <div *ngIf="f['password'].errors['checkLowerCase']">
+                  Password must have at least one lowercase
+                </div>
+                <div *ngIf="f['password'].errors['checkUpperCase']">
+                  Password must have at least one uppercase
+                </div>
+                <div *ngIf="f['password'].errors['checkSpecialChar']">
+                  Password must have at least one special character
+                </div>
+                <div *ngIf="f['password'].errors['checkNumChar']">
+                  Password must have at least one number
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="!isEditUser" class="form-group">
+            <label class="col-md-3 control-label">Confirm Password</label>
+            <div class="col-md-9">
+              <input class="form-control" formControlName="confirmPassword" type="password" name="re_pass" id="re_pass"
+                placeholder="Enter your confirm password"
+                [ngClass]="{ 'is-invalid': submitted && f['confirmPassword'].errors }" />
+              <div *ngIf="submitted && f['confirmPassword'].errors" class="invalid-feedback">
+                <div *ngIf="f['confirmPassword'].errors['required']">Confirm password is required</div>
+                <div *ngIf="f['confirmPassword'].errors['matching']">
+                  Confirm Password does not match
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+  <div class="col-md-2 m-b-sm">
+    <button cdkFocusInitial type="submit" (click)="updateUserInfo()"
+      class="btn btn-block btn-sm btn-info">Save</button>
+  </div>
+  <div class="col-md-2 m-b-sm">
+    <button mat-dialog-close [mat-dialog-close]="false" class="btn btn-block btn-sm btn-secondary">Cancel</button>
+  </div>
+</mat-dialog-actions>

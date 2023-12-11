@@ -1,0 +1,290 @@
+<div class="bg-light lter b-b wrapper-md d-flex">
+  <span *ngIf="isSubmitQuotation" class="m-n font-thin h3 full-width">Enter Quotation</span>
+  <span *ngIf="!isSubmitQuotation" class="m-n font-thin h3 full-width">Prospect Details</span>
+  <span *ngIf="companyInfo?.status?.description && !isSubmitQuotation" class="full-width">
+    <ng-container *ngIf="allowUserEnterKeyExpireDate">
+      <form class="bs-example form-horizontal">
+        <div class="form-group">
+          <label class="col-xs-5 control-label">Access Key Expires In</label>
+          <div class="col-xs-4 no-padder">
+            <input type="number" value="30" min="0" class="form-control">
+          </div>
+          <div class="col-xs-3">
+            {{'days'}} {{'('}}{{accessKeyExpiresIn | date: 'M/d/y'}}{{')'}}
+          </div>
+        </div>
+      </form>
+    </ng-container>
+    <span class="pull-right" *ngFor="let action of getActionStatusRules(companyInfo?.status?.description)?.reverse()">
+      <div *ngIf="action?.name !== statusActions?.Send_Questionaires_Again">
+        <button (click)="statusAction(action?.name)" class="btn btn-info mr-5 m-b-xs" type="button">
+          {{action?.name}}
+        </button>
+      </div>
+      <div *ngIf="action?.name === statusActions?.Send_Questionaires_Again && sendQuestionairesAgain">
+        <button (click)="statusAction(action?.name)" class="btn btn-info mr-5 m-b-xs" type="button">
+          {{action?.name}}
+        </button>
+      </div>
+    </span>
+  </span>
+</div>
+
+<!-- Enter Quotation -->
+<div *ngIf="isSubmitQuotation" id="submit-quotation">
+  <div class="wrapper-md">
+    <div class="panel panel-default">
+      <div class="panel-heading font-bold">Quotation</div>
+      <div class="panel-body">
+        <form class="bs-example form-horizontal" [formGroup]="quotationForm">
+          <div class="col-md-6">
+            <div class="form-group" *ngIf="questionaireAnswer?.numberofAdministratorUser">
+              <label class="col-xs-6 control-label">Provider Module
+                (T{{questionaireAnswer?.numberofAdministratorUser}})</label>
+              <div class="col-xs-4">
+                <input (change)="calculateMonthlyTotal()" formControlName="providerModuleFee" class="form-control"
+                  appCurrencyInput placeholder="Enter your provider module">
+              </div>
+            </div>
+            <div class="form-group" *ngIf="questionaireAnswer?.numberOfDayHabs">
+              <label class="col-xs-6 control-label">Day Hab Module (T{{questionaireAnswer?.numberOfDayHabs}})</label>
+              <div class="col-xs-4">
+                <input (change)="calculateMonthlyTotal()" formControlName="dayHabModuleFee" class="form-control"
+                  appCurrencyInput placeholder="Enter your day hab module">
+              </div>
+            </div>
+            <div class="form-group" *ngIf="questionaireAnswer?.numberOfHCSGroupHome">
+              <label class="col-xs-6 control-label">HCS Group Home Module
+                (T{{questionaireAnswer?.numberOfHCSGroupHome}})</label>
+              <div class="col-xs-4">
+                <input (change)="calculateMonthlyTotal()" formControlName="hcsGroupHomeModuleFee" class="form-control"
+                  appCurrencyInput placeholder="Enter your hcs group home module">
+              </div>
+            </div>
+            <div class="form-group" *ngIf="questionaireAnswer?.numberOfICFGroupHome">
+              <label class="col-xs-6 control-label">ICF Group Home Module
+                (T{{questionaireAnswer?.numberOfICFGroupHome}})</label>
+              <div class="col-xs-4">
+                <input formControlName="icfGroupHomeModuleFee" class="form-control" appCurrencyInput
+                  (change)="calculateMonthlyTotal()" placeholder="Enter your icf group home module">
+              </div>
+            </div>
+            <div class="form-group" *ngIf="questionaireAnswer?.numberOfInHomeDayHabs">
+              <label class="col-xs-6 control-label">In Home Day Hab Module
+                (T{{questionaireAnswer?.numberOfInHomeDayHabs}})</label>
+              <div class="col-xs-4">
+                <input formControlName="inHomeDayHabModuleFee" class="form-control" appCurrencyInput
+                  (change)="calculateMonthlyTotal()" placeholder="Enter your in home day hab module">
+              </div>
+            </div>
+            <div class="form-group" *ngIf="questionaireAnswer?.numberOfMedicalDayhabs">
+              <label class="col-xs-6 control-label">Medical Day Hab Module
+                (T{{questionaireAnswer?.numberOfMedicalDayhabs}})</label>
+              <div class="col-xs-4">
+                <input formControlName="medicalDayHabModuleFee" class="form-control" appCurrencyInput
+                  (change)="calculateMonthlyTotal()" placeholder="Enter your medical day hab module">
+              </div>
+            </div>
+            <div class="form-group" *ngIf="questionaireAnswer?.numberOfHostHomeClients">
+              <label class="col-xs-6 control-label">Host Home Module
+                (T{{questionaireAnswer?.numberOfHostHomeClients}})</label>
+              <div class="col-xs-4">
+                <input formControlName="hostHomeModuleFee" class="form-control" appCurrencyInput
+                  (change)="calculateMonthlyTotal()" placeholder="Enter your host home module">
+              </div>
+            </div>
+            <div class="form-group" *ngIf="questionaireAnswer?.numberOfCFCPeopleServed">
+              <label class="col-xs-6 control-label">CFC Module
+                (T{{questionaireAnswer?.numberOfCFCPeopleServed}})</label>
+              <div class="col-xs-4">
+                <input formControlName="cfcModuleFee" class="form-control" appCurrencyInput
+                  (change)="calculateMonthlyTotal()" placeholder="Enter your cfc module">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-xs-6 control-label">Discount** - Multi-Module</label>
+              <div class="col-xs-4">
+                <input formControlName="multiModuleDiscount" appCurrencyInput class="form-control text-danger"
+                  (change)="calculateMonthlyTotal()" placeholder="Enter your multi module discount">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-xs-2 control-label">Discount** - </label>
+              <div class="col-xs-4">
+                <input formControlName="specialDiscountName" class="form-control" placeholder="Name of discount">
+              </div>
+              <div class="col-xs-4">
+                <input formControlName="specialDiscount" appCurrencyInput class="form-control text-danger"
+                  (change)="calculateMonthlyTotal()" placeholder="Enter your multi module discount">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-xs-6 control-label">Estimated Monthly Total***</label>
+              <div class="col-xs-4">
+                <input formControlName="estimatedMonthlyTotal" class="form-control font-weight-bold" appCurrencyInput
+                  placeholder="Enter your estimated monthly total">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-xs-6 control-label">Deadline to accept</label>
+              <div class="col-xs-4">
+                <input (change)="chnageDeadline(quotationForm.value.deadlineToAcceptInDays)"
+                  formControlName="deadlineToAcceptInDays" class="form-control" type="text"
+                  placeholder="Enter your deadline days to accept">
+              </div>
+              <div class="col-xs-2 break-word no-padder">{{'days'}} {{'('}}{{deadlineDate | date: 'M/d/y'}}{{')'}}</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="control-label col-xs-12">Set-up and Training (3 sessions)* - One Time Fee</label>
+              <fieldset class="col-xs-12" id="onetimeSetupAndTrainingFee">
+                <div class="wrapper-xs">
+                  <span><input id="trainingOnlineFee" value="remoteOnline" type="radio" name="onetimeSetupAndTrainingFee"
+                      formControlName="onetimeSetupAndTrainingFee"></span>
+                  <span class="padder fw-500">Remote/Online - ${{trainingOnlineFee}}</span>
+                </div>
+                <div class="wrapper-xs">
+                  <span><input id="trainingOnSiteFee" value="onsiteLocation" type="radio" name="onetimeSetupAndTrainingFee"
+                      formControlName="onetimeSetupAndTrainingFee"></span>
+                  <span class="padder fw-500">On-site/location - ${{trainingOnSiteFee}}</span>
+                </div>
+              </fieldset>
+            </div>
+            <div class="form-group">
+              <label class="col-xs-6 control-label">Discount for set-up and training</label>
+              <div class="col-xs-4">
+                <input (change)="calculateTrainingFee()" formControlName="discountForSetupAndTraining"
+                  class="form-control text-danger" appCurrencyInput
+                  placeholder="Enter your discount for set-up and training">
+              </div>
+            </div>
+            <div class="form-group" *ngIf="questionaireAnswer?.numberOfEncryptedEmailAccounts">
+              <label class="col-xs-6 control-label">Encrypted Email TBD (Paid annually)
+                (T{{questionaireAnswer?.numberOfEncryptedEmailAccounts}})</label>
+              <div class="col-xs-4">
+                <input formControlName="encryptedEmailAnnualFee" class="form-control" appCurrencyInput
+                  placeholder="Enter your encrypted email tbd">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 m-b-sm pt-20 text-center">
+            <button (click)="submitQuotation()" class="btn btn-info m-b-sm mr-5">Submit to client</button>
+            <button class="btn btn-secondary m-b-sm">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Prospect Details -->
+<div *ngIf="companyInfo" id="prospect-details">
+  <div class="wrapper-md">
+    <div class="panel panel-default">
+      <div class="wrapper-md prospect-wrapper">
+        <h2>Prospect Details</h2>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="row details">
+              <div class="col-xs-12 details">
+                <div class="col-xs-2 fw-500">Company Name</div>
+                <div class="col-xs-3">{{companyInfo?.companyName}}</div>
+                <div class="col-xs-1 fw-500">Status</div>
+                <div class="col-xs-6">{{companyInfo?.status?.description}}</div>
+              </div>
+              <div class="col-xs-12 details">
+                <div class="col-xs-2 fw-500">Company Owner</div>
+                <div class="col-xs-10">{{companyInfo?.companyOwner}}</div>
+              </div>
+              <div class="col-xs-12 details">
+                <div class="col-xs-2 fw-500">Created Date</div>
+                <div class="col-xs-10">{{companyInfo?.createdDate | date: 'M/d/y' }}</div>
+              </div>
+              <div class="col-xs-12 details">
+                <div class="col-xs-2 fw-500">Phone No.</div>
+                <div class="col-xs-10">{{companyInfo?.phoneNumber}}</div>
+              </div>
+              <div class="col-xs-12 details">
+                <div class="col-xs-2 fw-500">Email Address</div>
+                <div class="col-xs-10">{{companyInfo?.emailAddress}}</div>
+              </div>
+              <div class="col-xs-12 details">
+                <div class="col-xs-2 fw-500">Description</div>
+                <div class="col-xs-10">{{companyInfo?.description}}</div>
+              </div>
+              <div class="col-xs-12 details">
+                <div class="col-xs-2 fw-500">Website</div>
+                <div class="col-xs-10">{{companyInfo?.website}}</div>
+              </div>
+              <div class="col-xs-12 details">
+                <div class="col-xs-2 fw-500">Address</div>
+                <div class="col-xs-10">{{getOfficeAddress()}}
+                </div>
+                <div class="col-xs-12 details">
+                  <div class="col-xs-2 fw-500">Contact</div>
+                  <div class="col-xs-2 fw-500">Contact Name</div>
+                  <div class="col-xs-2 fw-500">Phone Number</div>
+                  <div class="col-xs-2 fw-500">Email</div>
+                  <div class="col-xs-2 fw-500">Job Title</div>
+                  <div class="col-xs-2 fw-500 df-jc">Primary Contact</div>
+                </div>
+                <div class="col-xs-12 details m-b-sm" *ngFor="let contact of companyInfo?.contact">
+                  <div class="col-xs-2"></div>
+                  <div class="col-xs-2 break-word">{{contact?.contactName}}</div>
+                  <div class="col-xs-2 break-word">{{contact?.phoneNumber}}</div>
+                  <div class="col-xs-2 break-word">{{contact?.email}}</div>
+                  <div class="col-xs-2 break-word">{{contact?.jobTitle}}</div>
+                  <div class="col-xs-2 df-jc break-word"><input type="radio" [checked]="contact?.isPrimaryContact">
+                  </div>
+                </div>
+                <div class="col-xs-12 m-b-sm p-r-0">
+                  <mat-accordion class="example-headers-align" multi>
+                    <mat-expansion-panel>
+                      <mat-expansion-panel-header>
+                        <div class="col-xs-2 fw-500"> Activity Log </div>
+                        <div class="col-xs-2 fw-500"> Date </div>
+                        <div class="col-xs-3 fw-500"> Activity </div>
+                        <div class="col-xs-2 fw-500"> Author </div>
+                        <div class="col-xs-2 fw-500"> Content </div>
+                      </mat-expansion-panel-header>
+                      <div class="col-xs-12" *ngFor="let activity of companyInfo?.prospectActivityLog">
+                        <div class="col-xs-2"></div>
+                        <div class="col-xs-2 details break-word">{{activity?.activityTimeUtc | date: 'M/d/y'}}</div>
+                        <div class="col-xs-3 details break-word">{{activity?.activity}}</div>
+                        <div class="col-xs-2 details no-padder break-word">{{activity?.createdBy}}</div>
+                        <div *ngIf="activity?.contentSubject || activity?.contentBody"
+                          class="col-xs-2 details no-padder break-word view-link" (click)="viewContent(activity)"> View
+                        </div>
+                      </div>
+                    </mat-expansion-panel>
+                  </mat-accordion>
+                </div>
+                <!-- Questionnaire Answers -->
+                <div *ngIf="questionairesAnswers">
+                  <div class="col-xs-12 m-b-sm p-r-0" *ngFor="let questionnaireAnswer of questionairesAnswers?.questionnaireAnswers;">
+                    <mat-accordion class="example-headers-align" multi>
+                      <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                          <div class="col-xs-12 fw-500"> Questionnaire Answer - {{questionnaireAnswer?.questionnaireAnswerSubmittedTimeUtc | date: 'M/d/y'}} - {{capitalizeString(questionnaireAnswer?.contact?.contactName)}}</div>
+                        </mat-expansion-panel-header>
+                        <div id="questionnaire-details">
+                          <app-send-questionaires [questionariesAnswers]="questionnaireAnswer" [questionariesDetails]="questionairesAnswers"></app-send-questionaires>
+                        </div>
+                      </mat-expansion-panel>
+                    </mat-accordion>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 pt-20 df-jc">
+      <div (click)="back()" class="col-xs-2 m-b-sm no-padder">
+        <button class="btn btn-block btn-sm btn-secondary">Back</button>
+      </div>
+    </div>
+  </div>
+</div>

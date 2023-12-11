@@ -1,0 +1,31 @@
+<div class="bg-light lter b-b wrapper-md">
+  <h1 class="m-n font-thin h3">User Details</h1>
+</div>
+<div class="wrapper-md">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="details col-md-6">
+        <dl>
+          <dt>Full Name</dt>
+          <dd>{{user && user?.firstName + ' ' + user?.lastName}}</dd>
+          <dt>Username</dt>
+          <dd>{{user?.userName}}</dd>
+          <dt>Created Date</dt>
+          <dd>{{user?.createdTimeUtc | date: 'M/d/y'}}</dd>
+          <dt>Status</dt>
+          <dd>{{user && user?.isActive ? 'Active' : user && 'Inactive'}}</dd>
+          <dt>User Role</dt>
+          <dd>{{user?.roles?.join(', ')}}</dd>
+        </dl>
+      </div>
+      <div class="col-md-6 no-padder">
+        <div class="col-md-4 m-b-sm">
+          <button (click)="updateUser()" class="btn btn-sm btn-block btn-info">Edit User</button>
+        </div>
+        <div class="col-md-4 m-b-sm">
+          <button (click)="back()" class="btn btn-sm btn-block btn-secondary">Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

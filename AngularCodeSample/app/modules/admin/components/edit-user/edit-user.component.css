@@ -1,0 +1,11 @@
+.control-label{
+  text-align: left;
+}
+
+.main-heading{
+  font-weight: 500;
+}
+
+::ng-deep .mat-option .mat-pseudo-checkbox-checked {
+  background: #23b7e5 !important;
+}

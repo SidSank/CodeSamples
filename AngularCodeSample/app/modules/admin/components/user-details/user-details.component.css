@@ -1,0 +1,22 @@
+dl {
+  font-size: larger;
+  display: grid;
+  grid-template-columns: max-content auto;
+}
+
+dt {
+  font-weight: inherit;
+  grid-column-start: 1;
+}
+
+dd {
+  grid-column-start: 3;
+}
+
+.details{
+  padding-left: 0;
+}
+
+.control-label{
+  text-align: left;
+}

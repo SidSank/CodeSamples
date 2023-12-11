@@ -1,0 +1,61 @@
+<div class="wrapper-md">
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="offset-md-3 col-md-6">
+      <div class="panel panel-default">
+        <h1 class="panel-heading font-bold login-header">Login</h1>
+        <div class="panel-body">
+          <form class="bs-example form-horizontal" [formGroup]="loginForm" (ngSubmit)="validateUser()" id="login-form">
+            <div class="form-group">
+              <label class="col-md-3 control-label">Username:</label>
+              <div class="col-md-6">
+                <input formControlName="userName" type="email" name="userName" id="userName" class="form-control"
+                  placeholder="Enter your user name" [ngClass]="{ 'is-invalid': submitted && f['userName'].errors }" />
+                <div *ngIf="submitted && f['userName'].errors" class="invalid-feedback">
+                  <div *ngIf="f['userName'].errors['required']">Username is required</div>
+                  <div *ngIf="f['userName'].errors['email']">Username is invalid</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">Password</label>
+              <div class="col-md-6">
+                <input formControlName="password" type="password" name="password" id="password" class="form-control"
+                  placeholder="Enter your new password" [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" />
+                <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+                  <div *ngIf="f['password'].errors['required']">Password is required</div>
+                  <div *ngIf="f['password'].errors['maxlength']">
+                    Password must be less than 20 characters
+                  </div>
+                  <div *ngIf="f['password'].errors['minlength']">
+                    Password must be at least 6 characters
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3"></div>
+            </div>
+            <div class="form-group">
+              <div class="col-md-offset-3 col-md-6">
+                <div class="checkbox">
+                  <span>
+                    <label class="i-checks">
+                      <input formControlName="rememberMe" type="checkbox" checked><i></i> Remember me
+                    </label>
+                  </span>
+                  <span><a routerLink="/forgot-password" href="">Forgot Password?</a></span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-md-offset-3 col-md-9">
+                <button type="submit" class="btn btn-sm btn-info">Sign in</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="login-page">
+</div>

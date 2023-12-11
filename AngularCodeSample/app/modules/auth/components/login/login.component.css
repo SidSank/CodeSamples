@@ -1,0 +1,12 @@
+.login-header{
+  background-color: #fff;
+}
+
+.checkbox{
+  display: flex;
+  justify-content: space-between;
+}
+
+a:hover{
+  text-decoration: underline;
+}

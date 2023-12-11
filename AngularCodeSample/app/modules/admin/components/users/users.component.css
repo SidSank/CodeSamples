@@ -1,0 +1,48 @@
+table {
+  width: 100%;
+}
+
+tr.mat-header-row {
+  height: 43px;
+}
+
+.card-header{
+  background-color: #555;
+  color: white;
+}
+
+.table-search{
+  border-bottom: 1px solid #eaeff0;
+}
+
+.add{
+  border: none;
+  color: white;
+  padding: 8px 17px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.user-details-link{
+  color: rgba(0,0,0,.87);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.check{
+  padding-left: 28px;
+}
+
+.mat-column-firstName,
+.mat-column-userName,
+.mat-column-createdTimeUtc,
+.mat-column-isActive,
+.mat-column-roles {
+  width: 150px;
+  padding-right: 7px;
+}
+

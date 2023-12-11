@@ -1,0 +1,18 @@
+<div class="app app-header-fixed">
+  <!-- header -->
+  <app-header></app-header>
+  <!-- / header -->
+
+  <!-- aside -->
+  <app-sidebar></app-sidebar>
+  <!-- / aside -->
+
+  <!-- content -->
+  <div id="content" class="app-content" role="main">
+    <div class="app-content-body" [ngClass]="{'app-overlay': loading}">
+      <app-overlay></app-overlay>
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  <!-- /content -->
+</div>

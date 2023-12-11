@@ -1,0 +1,75 @@
+.details{
+  padding-left: 0;
+  line-height: 2;
+}
+
+.fw-500{
+  font-weight: 500;
+}
+
+.pt-20{
+  padding-top: 20px;
+}
+
+.example-headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.example-headers-align .mat-mdc-form-field + .mat-mdc-form-field {
+  margin-left: 8px;
+}
+
+.mat-expansion-panel:not([class*=mat-elevation-z]) {
+  /* box-shadow: none; */
+}
+
+.mat-expansion-panel-header{
+  padding-left: 0px;
+}
+
+:host::ng-deep .mat-expansion-panel-body {
+  padding: 0;
+}
+
+.mat-expansion-panel {
+  color: inherit;
+}
+
+.mat-expansion-panel-header {
+  font: 400 14px/20px Roboto, "Helvetica Neue", sans-serif;;
+  font-size: inherit;
+}
+
+.add{
+  border: none;
+  color: white;
+  padding: 8px 17px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.prospect-wrapper{
+  padding: 20px 30px;
+}
+
+.quotation-form{
+  padding-top: 30px;
+}
+
+.form-horizontal .control-label{
+  text-align: left;
+}
+
+.activity-logs{
+  padding-top: 10px;
+}
+
+.view-link{
+  text-decoration: underline;
+}
+

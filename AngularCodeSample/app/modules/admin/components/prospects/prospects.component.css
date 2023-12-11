@@ -1,0 +1,74 @@
+table {
+  width: 100%;
+}
+
+tr.mat-header-row {
+  height: 43px;
+}
+
+.card-header {
+  background-color: #555;
+  color: white;
+}
+
+.table-search {
+  border-bottom: 1px solid #eaeff0;
+}
+
+.add {
+  border: none;
+  color: white;
+  padding: 8px 17px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.details-link {
+  color: rgba(0, 0, 0, .87);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.search-form {
+  padding-top: 20px;
+}
+
+.filter-btns {
+  display: flex;
+  justify-content: center;
+}
+
+
+.mat-column-companyName,
+.mat-column-companyOwner,
+.mat-column-phoneNumber,
+.mat-column-createdDate,
+.mat-column-statusName,
+.mat-column-actions {
+  width: 100px;
+}
+
+.select-state{
+  padding-left: 18px;
+  padding-top: 0px;
+  height: 40px;
+  padding-bottom: 0px;
+}
+
+.filterLinks{
+  color: #19a9d5;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.filter-btns{
+  padding-top: calc(100px - 68px);
+}
+
+.filter-link{
+  padding-top: calc(100px - 68px);
+}
